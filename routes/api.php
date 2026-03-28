@@ -7,9 +7,9 @@ use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//    return $request->user();
+// })->middleware('auth:sanctum');
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -19,12 +19,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::post('/order', [OrderController::class, 'create']);
+
+    Route::get('/users', [UserController::class, 'index']);
+    Route::post('/books', [BookController::class, 'store']);
+
 });
 
+Route::controller(BookController::class)->group(function () {
+    Route::get('/books', 'index');
+    Route::get('/books/{book}', 'show');
+});
 
-Route::get('/books', [BookController::class, 'index']);
-Route::get('/books/{book}', [BookController::class, 'show']);
-Route::get('/users', [UserController::class, 'index']);
-
-
-
+// Route::get('/users', [UserController::class, 'index']);

@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use Database\Factories\UserBookFactory;
+use Database\Factories\BookUserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserBook extends Model
+class BookUser extends Model
 {
-    /** @use HasFactory<UserBookFactory> */
+    /** @use HasFactory<BookUserFactory> */
     use HasFactory;
 
     protected $fillable = [
         'user_id',
         'book_id',
-        'status'
+        'status',
     ];
 
     public $timestamps = false;

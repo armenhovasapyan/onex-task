@@ -13,7 +13,7 @@ class Book extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'quantity'
+        'quantity',
     ];
 
     public function users(): BelongsToMany

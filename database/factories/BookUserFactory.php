@@ -5,13 +5,13 @@ namespace Database\Factories;
 use App\Enums\OrderStatus;
 use App\Models\Book;
 use App\Models\User;
-use App\Models\UserBook;
+use App\Models\BookUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<UserBook>
+ * @extends Factory<BookUser>
  */
-class UserBookFactory extends Factory
+class BookUserFactory extends Factory
 {
     /**
      * Define the model's default state.

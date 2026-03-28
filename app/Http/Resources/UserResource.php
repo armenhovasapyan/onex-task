@@ -17,13 +17,7 @@ class UserResource extends JsonResource
         return [
             'name' => $this->name,
             'email' => $this->email,
-            'books' => $this->books->map(function ($book) {
-                return [
-                    'name' => $book->name,
-                    'quantity' => $book->quantity,
-//                    'status' => $book->users->status
-                ];
-            }),
+            'books' => BookResource::collection($this->whenLoaded('books')),
         ];
     }
 }

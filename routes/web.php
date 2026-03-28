@@ -7,4 +7,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Route::post('/order', [OrderController::class, 'create']);
+// Route::post('/order', [OrderController::class, 'create']);

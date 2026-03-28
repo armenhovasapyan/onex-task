@@ -2,11 +2,11 @@
 
 namespace App\Enums;
 
-enum OrderStatus: int
+enum OrderStatus: string
 {
-    case PENDING = 0;
+    case PENDING = '0';
 
-    case Success = 1;
+    case CONFIRMED = '1';
 
-    case Declined = -1;
+    case CANCELED = '-1';
 }

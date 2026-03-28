@@ -22,3 +22,13 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# PHP CS Fixer cache file
+.php_cs.cache
+.php-cs-fixer.cache
+
+# Local PHP CS Fixer configuration file (if you have one separate from the project's shared config)
+.php-cs-fixer.php
+
+# PHP CodeSniffer cache (if applicable)
+*.cs.cache

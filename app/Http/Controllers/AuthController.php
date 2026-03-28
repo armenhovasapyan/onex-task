@@ -4,30 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Models\User;
+use App\Http\Resources\UserResource;
+use App\Services\Contracts\UserServiceInterface;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    public function __construct(
+        private readonly UserServiceInterface $userService
+    ) {}
+
     public function register(RegisterRequest $request)
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $data = $request->validated();
+        $data['password'] = Hash::make($request->password);
+        $user = $this->userService->createUser($data);
 
-        return response()->json([
-            'message' => 'User registered successfully!',
-            'user' => $user,
-        ], 201);
+        return UserResource::collection($user);
     }
 
     public function login(LoginRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $user = $this->userService->getUserByEmail($request->email);
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
@@ -35,12 +35,13 @@ class AuthController extends Controller
             ]);
         }
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $this->userService->createUserToken($user);
 
-        return response()->json([
-            'message' => 'Login successful!',
+        return [
             'token' => $token,
-        ]);
+            'token_type' => 'Bearer',
+            'user' => new UserResource($user),
+        ];
     }
 
     // Logout (Revoke Token)

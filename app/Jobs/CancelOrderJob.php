@@ -13,11 +13,10 @@ class CancelOrderJob implements ShouldQueue
 
     /**
      * Create a new job instance.
+     *
+     * @param mixed $data
      */
-    public function __construct(protected $data)
-    {
-        //
-    }
+    public function __construct(protected $data) {}
 
     /**
      * Execute the job.
@@ -30,7 +29,7 @@ class CancelOrderJob implements ShouldQueue
             DB::transaction(function () use ($userId, $bookId) {
                 $book = Book::find($bookId);
                 $book->users()->detach($userId);
-                $book->decrement('quantity', $book->quantity + 1);
+                $book->increment('quantity', $book->quantity + 1);
             });
         } catch (\Exception $exception) {
             dd($exception->getMessage());

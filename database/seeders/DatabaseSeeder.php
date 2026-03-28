@@ -18,11 +18,13 @@ class DatabaseSeeder extends Seeder
     {
         Book::factory()
             ->count(10)
-            ->create();
+            ->create()
+        ;
 
         User::factory()
             ->hasBooks()
             ->count(2)
-            ->create();
+            ->create()
+        ;
     }
 }
