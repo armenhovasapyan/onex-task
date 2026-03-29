@@ -3,7 +3,6 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Enums\OrderStatus;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -27,6 +26,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -52,16 +52,11 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function books(): BelongsToMany
     {
-        return $this->belongsToMany(Book::class);
-    }
-
-    public function booksWithPendingStatus()
-    {
-        return $this->books()
-            ->wherePivot('status', '=', OrderStatus::PENDING)
-            ->withPivot('status')
-            ->get();
+        return $this->belongsToMany(Book::class)->withPivot('status');
     }
 }

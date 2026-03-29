@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Enums\OrderStatus;
+use App\Enums\ReservationStatus;
 use App\Models\Book;
-use App\Models\User;
 use App\Models\BookUser;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,7 +23,7 @@ class BookUserFactory extends Factory
         return [
             'user_id' => User::query()->inRandomOrder()->value('id'),
             'book_id' => Book::query()->inRandomOrder()->value('id'),
-            'status' => OrderStatus::PENDING,
+            'status' => ReservationStatus::PENDING->value,
         ];
     }
 }

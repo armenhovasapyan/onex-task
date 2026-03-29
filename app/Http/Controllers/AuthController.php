@@ -2,30 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SystemRoles;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Services\Contracts\UserServiceInterface;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    /**
+     * @param UserServiceInterface $userService
+     */
     public function __construct(
         private readonly UserServiceInterface $userService
     ) {}
 
-    public function register(RegisterRequest $request)
+    /**
+     * @param RegisterRequest $request
+     * @return UserResource
+     */
+    public function register(RegisterRequest $request): UserResource
     {
         $data = $request->validated();
+        $data['role'] = SystemRoles::USER->value;
         $data['password'] = Hash::make($request->password);
         $user = $this->userService->createUser($data);
 
-        return UserResource::collection($user);
+        return new UserResource($user);
     }
 
-    public function login(LoginRequest $request)
+    /**
+     * @param LoginRequest $request
+     * @return array
+     */
+    public function login(LoginRequest $request): array
     {
         $user = $this->userService->getUserByEmail($request->email);
 
@@ -39,18 +53,18 @@ class AuthController extends Controller
 
         return [
             'token' => $token,
-            'token_type' => 'Bearer',
             'user' => new UserResource($user),
         ];
     }
 
-    // Logout (Revoke Token)
-    public function logout(Request $request)
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function logout(Request $request): Response
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json([
-            'message' => 'Logged out successfully!',
-        ]);
+        return response()->noContent();
     }
 }

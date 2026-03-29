@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\OrderStatus;
+use App\Enums\ReservationStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +14,16 @@ return new class extends Migration {
         Schema::create('book_user', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('book_id')->constrained('books');
-            $table->enum('status', [OrderStatus::PENDING, OrderStatus::CONFIRMED, OrderStatus::CANCELED])->default(OrderStatus::PENDING);
+            $table->enum(
+                'status',
+                [
+                    ReservationStatus::PENDING,
+                    ReservationStatus::CONFIRMED,
+                    ReservationStatus::CANCELED,
+                ]
+            )
+                ->default(ReservationStatus::PENDING)
+            ;
         });
     }
 

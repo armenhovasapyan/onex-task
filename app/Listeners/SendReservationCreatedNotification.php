@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\ReservationCreated;
+use App\Jobs\CancelReservationJob;
 
 class SendReservationCreatedNotification
 {
@@ -16,6 +17,14 @@ class SendReservationCreatedNotification
      */
     public function handle(ReservationCreated $event): void
     {
-        dd($event->bookUser);
+        CancelReservationJob::dispatch(
+            [
+                'userId' => $event->userId,
+                'bookId' => $event->bookId,
+            ],
+            $event->reservationService
+        )
+            ->delay(now()->addMinutes(30))
+        ;
     }
 }

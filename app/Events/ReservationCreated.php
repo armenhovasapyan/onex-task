@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\BookUser;
+use App\Services\Contracts\ReservationServiceInterface;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -19,7 +19,9 @@ class ReservationCreated
      * Create a new event instance.
      */
     public function __construct(
-        public BookUser $bookUser
+        public int $userId,
+        public int $bookId,
+        public ReservationServiceInterface $reservationService,
     ) {}
 
     /**

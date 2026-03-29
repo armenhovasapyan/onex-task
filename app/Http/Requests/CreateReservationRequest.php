@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateBookRequest extends FormRequest
+class CreateReservationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,13 +18,12 @@ class CreateBookRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return ValidationRule
+     * @return array<string, array<mixed>|string|ValidationRule>
      */
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:5|max:45',
-            'quantity' => 'required|integer|min:1',
+            'book_id' => 'required|integer|exists:books,id',
         ];
     }
 }

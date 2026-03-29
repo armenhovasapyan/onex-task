@@ -18,6 +18,9 @@ class BookResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'quantity' => $this->quantity,
+            'status' => $this->whenPivotLoaded('book_user', function () {
+                return $this->pivot->status;
+            }),
         ];
     }
 }
